@@ -5,9 +5,12 @@ import { authService } from './firebaseInstance';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Login, Profile, Schedule } from './pages/index.';
 import styled from 'styled-components';
+require('dotenv').config();
 
 export default function App() {
   const [init, setInit] = React.useState(false);
+
+  console.log('Public URL:', process.env.REACT_PUBLIC_URL);
 
   React.useEffect(() => {
     authService.onAuthStateChanged((user) => {
