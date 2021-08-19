@@ -5,6 +5,7 @@ import { authService, firebaseInstance } from '../firebaseInstance';
 
 export default function LoginPage() {
   const history = useHistory();
+
   async function onSocialLogin(e) {
     const { name } = e.target;
     let provider;

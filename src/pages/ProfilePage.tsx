@@ -8,7 +8,7 @@ export default function ProfilePage() {
 
   function onLogoutClick() {
     authService.signOut();
-    history.push('/');
+    history.push('/login');
   }
 
   return (

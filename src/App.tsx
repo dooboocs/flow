@@ -2,17 +2,16 @@ import React from 'react';
 import './App.css';
 import { TransactionProvider } from './contexts/TransactionContext';
 import { authService } from './firebaseInstance';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Login, Profile, Schedule } from './pages/index.';
 import styled from 'styled-components';
-require('dotenv').config();
+import AppRouter from './routes/AppRouter';
+import LoadingScreen from './components/LoadingScreen';
 
 export default function App() {
-  const [init, setInit] = React.useState(false);
+  const [isInitialized, setIsInitialized] = React.useState(false);
 
-  console.log('Public URL:', process.env.REACT_PUBLIC_URL);
+  console.log(process.env.NODE_ENV);
 
-  React.useEffect(() => {
+  function _initService() {
     authService.onAuthStateChanged((user) => {
       if (user) {
         const userObj = { name: user.displayName, uid: user.uid };
@@ -21,28 +20,17 @@ export default function App() {
         window.localStorage.removeItem('user');
       }
     });
-    setInit(true);
+    setIsInitialized(true);
+  }
+
+  React.useEffect(() => {
+    _initService();
   }, []);
 
   return (
     <TransactionProvider>
       <AppContainer>
-        {init ? (
-          <Router>
-            <Switch>
-              {window.localStorage.getItem('user') ? (
-                <>
-                  <Route exact path="/" component={Schedule} />
-                  <Route path="/profile" component={Profile} />
-                </>
-              ) : (
-                <Route exact path="/" component={Login} />
-              )}
-            </Switch>
-          </Router>
-        ) : (
-          <div>Initializing...</div>
-        )}
+        {isInitialized ? <AppRouter /> : <LoadingScreen />}
       </AppContainer>
     </TransactionProvider>
   );

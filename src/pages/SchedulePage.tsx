@@ -14,7 +14,7 @@ export default function SchedulePage() {
           display: 'inline-block',
         }}
       >
-        Schedule
+        Schedules
       </div>
       <TransactionList />
     </div>
